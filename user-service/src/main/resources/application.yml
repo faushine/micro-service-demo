@@ -1,0 +1,43 @@
+---
+
+server:
+  port: 20000
+
+spring:
+  application:
+    name: user-service
+  profiles: user1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10000/eureka/, http://localhost:10001/eureka/
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  security:
+    enabled: false
+
+---
+
+server:
+  port: 20001
+
+spring:
+  application:
+    name: user-service
+  profiles: user2
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10000/eureka/, http://localhost:10001/eureka/
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  security:
+    enabled: false

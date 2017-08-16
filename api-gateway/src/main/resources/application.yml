@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: api-gateway
+server:
+  port: 40000
+eureka:
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10000/eureka/, http://localhost:10001/eureka/
+
+zuul:
+  routes:
+    user:
+      path: /userService/**
+      service-id: service-consumer

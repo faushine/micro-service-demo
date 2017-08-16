@@ -1,0 +1,33 @@
+---
+spring:
+  profiles: eureka1
+  application:
+    name: eureka1-server
+
+server:
+  port: 10000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10001/eureka/
+  instance:
+    metadataMap:
+      instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+---
+spring:
+  profiles: eureka2
+  application:
+      name: eureka2-server
+
+server:
+  port: 10001
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10000/eureka
+  instance:
+      metadataMap:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
