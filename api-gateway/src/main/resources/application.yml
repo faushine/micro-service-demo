@@ -19,15 +19,24 @@ zuul:
       path: /userService/**
       serviceId: service-consumer
     oauth:
+      sensitiveHeaders:
       path: /oauthService/**
       serviceId: oauth-server
+      stripPrefix: false
+  addProxyHeaders: true
 
 security:
+  basic:
+    enabled: false
   oauth2:
     client:
-      accessTokenUri: http://localhost:40000/oauthService/oauth/token
-      userAuthorizationUri: http://localhost:40000/oauthService/oauth/authorize
-      clientId: webapp
+      accessTokenUri: http://localhost:60000/oauth/token
+      userAuthorizationUri: http://localhost:60000/oauth/authorize
+      clientId: client
+      clientSecret: secret
     resource:
-      userInfoUri: http://localhost:40000/oauthService/user
+      userInfoUri: http://localhost:60000/user
       preferTokenInfo: false
+
+logging:
+  level.org.springframework.security: DEBUG

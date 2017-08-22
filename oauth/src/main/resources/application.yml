@@ -2,7 +2,7 @@ spring:
   application:
     name: oauth-server
 server:
-  port: 50001
+  port: 60000
 
 eureka:
   instance:
@@ -12,7 +12,5 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:10000/eureka/, http://localhost:10001/eureka/
 
-security:
-  oauth2:
-    resource:
-      filterOrder: 3
+logging:
+  level.org.springframework.security: DEBUG

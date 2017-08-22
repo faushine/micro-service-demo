@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 @SpringBootApplication
 @EnableAuthorizationServer
-@EnableResourceServer
 @EnableDiscoveryClient
 public class OauthApplication {
 
@@ -55,8 +54,8 @@ public class OauthApplication {
 
         @Override
         public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-            return accountRepository.findByUserName(s)
-                    .map(a -> new User(a.getUserName(), a.getPassword(), a.isActive(), a.isActive(), a.isActive(), a.isActive(), AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_USER")))
+            return accountRepository.findByUsername(s)
+                    .map(a -> new User(a.getUsername(), a.getPassword(), a.isActive(), a.isActive(), a.isActive(), a.isActive(), AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_USER")))
                     .orElseThrow(() -> new UsernameNotFoundException("couldn't find the username" + s));
         }
     }
@@ -64,44 +63,30 @@ public class OauthApplication {
     @Configuration
     public static class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
-        @Autowired
         private AuthenticationManager authenticationManager;
+
+        private OauthUserDetailService oauthUserDetailService;
+
+        @Autowired
+        public AuthorizationConfig(AuthenticationManager authenticationManager, OauthUserDetailService oauthUserDetailService) {
+            this.authenticationManager = authenticationManager;
+            this.oauthUserDetailService = oauthUserDetailService;
+        }
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients.inMemory()
                     .withClient("client")
                     .secret("secret")
+                    .scopes("apps")
                     .authorizedGrantTypes("password", "authorization_code", "refresh_token")
             ;
         }
 
         @Override
-        public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-            security.tokenKeyAccess("permitAll()")
-                    .checkTokenAccess("isAuthenticated()");
-        }
-
-        @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.authenticationManager(authenticationManager);
-        }
-    }
-
-    @Configuration
-    public static class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http.csrf()
-                    .disable()
-                    .exceptionHandling()
-                    .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                    .and()
-                    .authorizeRequests()
-                    .anyRequest().authenticated()
-                    .and()
-                    .httpBasic();
+            endpoints.authenticationManager(authenticationManager)
+            .userDetailsService(oauthUserDetailService);
         }
     }
 }

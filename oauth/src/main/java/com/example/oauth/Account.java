@@ -7,7 +7,7 @@ import javax.persistence.Id;
 @Entity
 public class Account {
 
-    private String userName;
+    private String username;
     private String password;
     private boolean active;
 
@@ -23,12 +23,12 @@ public class Account {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -47,9 +47,12 @@ public class Account {
         this.active = active;
     }
 
-    public Account(String userName, String password, boolean active) {
-        this.userName = userName;
+    public Account(String username, String password, boolean active) {
+        this.username = username;
         this.password = password;
         this.active = active;
+    }
+
+    public Account() {
     }
 }
