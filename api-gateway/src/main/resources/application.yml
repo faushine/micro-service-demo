@@ -26,17 +26,15 @@ zuul:
   addProxyHeaders: true
 
 security:
-  basic:
-    enabled: false
   oauth2:
     client:
-      accessTokenUri: http://localhost:60000/oauth/token
-      userAuthorizationUri: http://localhost:60000/oauth/authorize
       clientId: client
       clientSecret: secret
+      accessTokenUri: http://localhost:60000/oauth/token
+      grant-type: client_credentials
+      scope: apps
     resource:
-      userInfoUri: http://localhost:60000/user
-      preferTokenInfo: false
+      userInfoUri: https://localhost:60000/user
 
 logging:
   level.org.springframework.security: DEBUG
