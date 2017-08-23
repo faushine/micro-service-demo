@@ -18,23 +18,3 @@ zuul:
     user:
       path: /userService/**
       serviceId: service-consumer
-    oauth:
-      sensitiveHeaders:
-      path: /oauthService/**
-      serviceId: oauth-server
-      stripPrefix: false
-  addProxyHeaders: true
-
-security:
-  oauth2:
-    client:
-      clientId: client
-      clientSecret: secret
-      accessTokenUri: http://localhost:60000/oauth/token
-      grant-type: client_credentials
-      scope: apps
-    resource:
-      userInfoUri: https://localhost:60000/user
-
-logging:
-  level.org.springframework.security: DEBUG

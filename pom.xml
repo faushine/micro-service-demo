@@ -14,7 +14,6 @@
         <module>user-service</module>
         <module>service-consumer</module>
         <module>api-gateway</module>
-        <module>oauth</module>
     </modules>
 
 
